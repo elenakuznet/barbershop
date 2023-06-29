@@ -1,0 +1,14 @@
+.navigation__list {
+    display: flex;
+    align-items: center;
+    gap: 33px;
+    list-style: none;
+}
+
+.navigation__link {
+    color: inherit;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 100%;
+    text-transform: uppercase;
+}
