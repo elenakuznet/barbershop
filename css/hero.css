@@ -9,6 +9,10 @@
     max-width: 904px;
 }
 
+.hero__slider {
+    min-height: 372px;
+}
+
 
 @media (max-width: 768px) {
     .hero {
