@@ -10,6 +10,7 @@
     text-transform: uppercase;
     text-decoration: none;
     cursor: pointer;
+    border: none;
 }
 
 .main-link:hover:not(:disabled) {

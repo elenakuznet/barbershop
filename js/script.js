@@ -17,7 +17,9 @@ const startSlider = () => {
 
 
     const checkSlider = () => {
-        if (activeSlide + 2 === sliderItems.length) {
+        if ((activeSlide + 2 === sliderItems.length && 
+            document.documentElement.offsetWidth > 560) || 
+            activeSlide === sliderItems.length) {
             btnNextSlide.style.display = 'none';
         }
         else {
@@ -35,22 +37,22 @@ const startSlider = () => {
     checkSlider();
 
     const nextSlide = () => {
-        sliderItems[activeSlide].classList.remove('slider__item--active');
+        sliderItems[activeSlide]?.classList.remove('slider__item--active');
         position = -sliderItems[0].clientWidth * activeSlide;
 
         sliderList.style.transform = `translateX(${position}px)`;
         activeSlide += 1;
-        sliderItems[activeSlide].classList.add('slider__item--active');
+        sliderItems[activeSlide]?.classList.add('slider__item--active');
         checkSlider();
     }
 
     const prevSlide = () => {
-        sliderItems[activeSlide].classList.remove('slider__item--active');
+        sliderItems[activeSlide]?.classList.remove('slider__item--active');
         position = -sliderItems[0].clientWidth * (activeSlide - 2);
 
         sliderList.style.transform = `translateX(${position}px)`;
         activeSlide -= 1;
-        sliderItems[activeSlide].classList.add('slider__item--active');
+        sliderItems[activeSlide]?.classList.add('slider__item--active');
         checkSlider();
     }
 
@@ -58,6 +60,11 @@ const startSlider = () => {
     btnNextSlide.addEventListener('click', nextSlide);
 
     window.addEventListener('resize', () => {
+        if (activeSlide + 2 > sliderItems.length && 
+            document.documentElement.offsetWidth > 560) {
+                activeSlide = sliderItems.length - 2;
+                sliderItems[activeSlide]?.classList.add('slider__item--active');
+            }
         position = -sliderItems[0].clientWidth * (activeSlide - 1);
         sliderList.style.transform = `translateX(${position}px)`;
         checkSlider();
