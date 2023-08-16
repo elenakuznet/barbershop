@@ -32,4 +32,25 @@
 .footer__copyright {
     font-size: 12px;
     line-height: 100%; 
+    margin: 0;
+}
+
+
+@media (max-width: 560px) {
+    .footer__container {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .footer__navigation {
+        justify-self: flex-start;
+    }
+
+    .footer__developers {
+        font-size: 10px;
+    }
+
+    .footer__copyright {
+        font-size: 10px;
+    }
 }

@@ -3,6 +3,7 @@
     align-items: center;
     gap: 33px;
     list-style: none;
+    padding: 0;
 }
 
 .navigation__link {
@@ -11,4 +12,18 @@
     font-size: 14px;
     line-height: 100%;
     text-transform: uppercase;
+}
+
+
+@media (max-width: 560px) {
+    .navigation__list {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+    }
+
+    .navigation__link {
+        font-size: 12px;
+        line-height: 100%;
+    }
 }
