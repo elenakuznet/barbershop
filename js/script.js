@@ -96,10 +96,6 @@ const initSlider = () => {
 };
 
 const renderPrice = (wrapper, data) => {
-//     <li class="price__item">
-//     <span class="price__item-title">Стрижка ножницами</span>
-//     <span class="price__item-count">2500 руб</span>
-// </li>
     data.forEach((item) => {
         const priceItem = document.createElement('li');
         priceItem.classList.add('price__item');
@@ -125,7 +121,7 @@ const renderService = (wrapper, data) => {
         return label;
         
     });
-    console.log(labels);
+
     wrapper.append(...labels);
 }
 
@@ -202,18 +198,18 @@ const renderMonth = (wrapper, data) => {
 
 
 const renderDay = (wrapper, data, month) => {
-    const labels = data.map(day => {
+    const labels = data.map((day) => {
         const label = document.createElement('label');
         label.classList.add('radio');
 
         label.innerHTML = `
             <input class="radio__input" type="radio" name="day" value="${day}">
             <span class="radio__label">${new Intl.DateTimeFormat('ru-Ru', {
-                month: 'long', day: 'numeric'
+                month: 'long', 
+                day: 'numeric',
             }).format(new Date(`${month}/${day}`))}</span>
         `;
         return label;
-        
     });
     wrapper.append(...labels);
 }
@@ -238,7 +234,7 @@ const renderTime = (wrapper, data) => {
 const initReserve = () => {
     const reserveForm = document.querySelector('.reserve__form');
     
-    const { fieldspec, fielddate, fieldmonth, fieldday, fieldtime, btn } = 
+    const { fieldservice, fieldspec, fielddate, fieldmonth, fieldday, fieldtime, btn } = 
         reserveForm;
 
     addDisabled([ fieldspec, fielddate, fieldmonth, fieldday, fieldtime, btn]);
@@ -274,8 +270,7 @@ const initReserve = () => {
         }
 
         if (target.name === 'month') {
-            addDisabled([ fieldday, fieldtime, btn]);
-            
+            addDisabled([fieldday, fieldtime, btn]);
             addPreload(fieldday);
 
             const response = await fetch(
@@ -297,7 +292,7 @@ const initReserve = () => {
                 `${API_URL}/api?spec=${reserveForm.spec.value}&month=${reserveForm.month.value}&day=${reserveForm.day.value}`);
             const data = await response.json();
 
-            fieldday.textContent = '';
+            fieldtime.textContent = '';
             renderTime(fieldtime, data);
             removePreload(fieldtime);
             removeDisabled([fieldtime]);
@@ -306,8 +301,47 @@ const initReserve = () => {
         if (target.name === 'time') {
             removeDisabled([btn]);
         }
-    })
-}
+    });
+
+    reserveForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(reserveForm);
+    const json = JSON.stringify(Object.fromEntries(formData));
+
+    const response = await fetch (`${API_URL}api/order`, {
+        method: 'post',
+        body: json,
+    });
+
+    const data = await response.json();
+
+    addDisabled([ 
+        fieldservice, 
+        fieldspec, 
+        fielddate, 
+        fieldmonth, 
+        fieldday, 
+        fieldtime, 
+        btn]);
+
+        const p = document.createElement('p');
+        console.log(data.month);
+        console.log(data.day);
+        console.log(data.time);
+        p.textContent = `
+            Спасибо за бронь #${data.id}!
+            Ждем вас ${new Intl.DateTimeFormat('ru-RU', {
+                month: 'long',
+                day: 'numeric',
+            }).format(new Date(`${data.month}/${data.day}`))},
+            время ${data.time}
+        `;
+        reserveForm.append(p);
+});
+};
+
+
 
 const init = () => {
     initSlider();
@@ -317,5 +351,3 @@ const init = () => {
 
 
 window.addEventListener('DOMContentLoaded', init);
-
-
