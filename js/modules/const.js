@@ -1,0 +1,1 @@
+export const API_URL = 'https://opposite-tricky-brand.glitch.me/';
